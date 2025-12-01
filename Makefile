@@ -12,7 +12,7 @@ run:
 		exit 1; \
 	fi
 	@echo "? Running service: $(DIR)"
-	SERVICE_DIR=$(DIR) docker compose run --rm -T app
+	SERVICE_DIR=$(DIR) docker compose run --build --rm -T app
 
 clean:
 	docker-compose down --rmi local --volumes --remove-orphans

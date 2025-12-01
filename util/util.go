@@ -2,6 +2,7 @@ package util
 
 import (
 	"bufio"
+	"log"
 	"os"
 )
 
@@ -14,4 +15,10 @@ func GetLinesFromStdin() []string {
 	}
 
 	return lines
+}
+
+func Must(err error) {
+	if err != nil {
+		log.Fatalf("An unexpected error occured")
+	}
 }
