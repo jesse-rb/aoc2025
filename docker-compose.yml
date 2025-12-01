@@ -1,0 +1,10 @@
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_DIR: ${SERVICE_DIR}
+    environment:
+      GO_ENV: dev
