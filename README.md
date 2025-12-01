@@ -13,7 +13,7 @@
 ```
 > make help
 
-make run DIR='<service>'   - Run a day e.g. make run day1
+make run DIR='<service>'   - Run a day e.g. make run DIR='day1''
 make clean                 - Stop docker container and clean images
 
 ```

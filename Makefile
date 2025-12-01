@@ -2,7 +2,7 @@
 
 help:
 	@echo ""
-	@echo "make run DIR='<service>'   - Run a day e.g. make run day1"
+	@echo "make run DIR='<service>'   - Run a day e.g. make run DIR='day1'"
 	@echo "make clean                 - Stop docker container and clean images"
 	@echo ""
 
