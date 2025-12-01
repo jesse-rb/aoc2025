@@ -20,9 +20,13 @@ make clean                 - Stop docker container and clean images
 
 **Running the solutions**
 
+First make sure you have your input to pipe as stdin into the solution
+
 ```
 make run DIR='<service directory>'
 
 for example:
-make run DIR='day1'
+echo "my input" | make run DIR='day1'
+cat input.txt | make run DIR='day1'
+make run DIR='day1' < input.txt
 ```
