@@ -2,7 +2,7 @@
 
 (this might be a bit silly)
 
-![advent of code problems](https://adventofcode.com/2025)
+[advent of code problems](https://adventofcode.com/2025)
 
 **REQUIREMENTS**
 
