@@ -32,11 +32,11 @@ func part2(lines []string) {
 		passes := 0
 		prev := current
 		if left {
-			passes = (util.Mod(0-current, 100) + toMoveInt) / 100
-			current = util.Mod(current-toMoveInt, 100)
+			passes = (util.ModInt(0-current, 100) + toMoveInt) / 100
+			current = util.ModInt(current-toMoveInt, 100)
 		} else {
 			passes = (current + toMoveInt) / 100
-			current = util.Mod(current+toMoveInt, 100)
+			current = util.ModInt(current+toMoveInt, 100)
 		}
 
 		countPassedZero += passes

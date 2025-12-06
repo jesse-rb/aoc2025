@@ -35,6 +35,6 @@ func InverseSignInt(x int) int {
 	return -1 * x
 }
 
-func Mod(a, b int) int {
+func ModInt(a int, b int) int {
 	return (a%b + b) % b
 }
