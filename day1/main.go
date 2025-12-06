@@ -8,13 +8,54 @@ import (
 )
 
 func main() {
-	log.Println("Hello world")
+	lines := util.GetLinesFromStdin()
+	part1(lines)
+	part2(lines)
+}
+
+func part2(lines []string) {
+	debug := false
+	// debug := true
+
+	log.Println("part2")
+
+	current := 50
+
+	countPassedZero := 0
+
+	for _, l := range lines {
+		left := string(l[0]) == "L"
+		toMoveString := l[1:]
+		toMoveInt, err := strconv.Atoi(toMoveString)
+		util.Must(err)
+
+		passes := 0
+		prev := current
+		if left {
+			passes = (util.InverseSignInt(100-current) - toMoveInt) / 100
+			current = util.Mod(current-toMoveInt, 100)
+		} else {
+			passes = (current + toMoveInt) / 100
+			current = util.Mod(current+toMoveInt, 100)
+		}
+
+		countPassedZero += util.AbsInt(passes)
+
+		if debug {
+			log.Printf("state: moved from(%d) amount(%s) to(%d) with num passed(%d)\n", prev, l, current, passes)
+		}
+	}
+
+	log.Println(countPassedZero)
+}
+
+func part1(lines []string) {
+	log.Println("part1")
 
 	current := 50
 
 	countCurrentLandOnZero := 0
 
-	lines := util.GetLinesFromStdin()
 	for _, l := range lines {
 		left := string(l[0]) == "L"
 		toMoveString := l[1:]

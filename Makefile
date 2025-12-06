@@ -2,18 +2,19 @@
 
 help:
 	@echo ""
-	@echo "make run DIR='<service>'   - Run a day e.g. make run DIR='day1'"
-	@echo "make clean                 - Stop docker container and clean images"
+	@echo "make run DAY='<day>'   - Run a day e.g. make run DAY='day1'"
+	@echo "make clean             - Stop docker container and clean images"
 	@echo ""
 
 run:
-	@if [ -z "$(DIR)" ]; then \
-		echo "? Error: You must provide DIR='<service>'"; \
+	@if [ -z "$(DAY)" ]; then \
+		echo "? Error: You must provide DAY='<day>'"; \
 		exit 1; \
 	fi
-	@echo "? Running service: $(DIR)"
-	SERVICE_DIR=$(DIR) docker compose run --build --rm -T app
+	@echo "? Running service: $(DAY)"
+	docker compose build $(DAY)
+	docker compose run -T --rm $(DAY)
 
 clean:
-	docker-compose down --rmi local --volumes --remove-orphans
+	docker compose down --rmi local --volumes --remove-orphans
 
