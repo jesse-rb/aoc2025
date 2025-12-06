@@ -1,9 +1,7 @@
 
 services:
-  day1:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        SERVICE_DIR: day1
-
+  aoc2025:
+    image: golang:1.25-alpine
+    working_dir: /app
+    volumes:
+     - .:/app

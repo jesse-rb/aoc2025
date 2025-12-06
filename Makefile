@@ -12,9 +12,8 @@ run:
 		exit 1; \
 	fi
 	@echo "? Running service: $(DAY)"
-	docker compose build $(DAY)
-	docker compose run -T --rm $(DAY)
+	docker compose run --rm -T aoc2025 sh -c "go build -o /tmp/app ./$(DAY) && /tmp/app"
 
 clean:
-	docker compose down --rmi local --volumes --remove-orphans
+	docker compose rm -sv aoc2025
 
