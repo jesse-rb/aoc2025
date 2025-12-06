@@ -32,14 +32,14 @@ func part2(lines []string) {
 		passes := 0
 		prev := current
 		if left {
-			passes = (util.InverseSignInt(100-current) - toMoveInt) / 100
+			passes = (util.Mod(0-current, 100) + toMoveInt) / 100
 			current = util.Mod(current-toMoveInt, 100)
 		} else {
 			passes = (current + toMoveInt) / 100
 			current = util.Mod(current+toMoveInt, 100)
 		}
 
-		countPassedZero += util.AbsInt(passes)
+		countPassedZero += passes
 
 		if debug {
 			log.Printf("state: moved from(%d) amount(%s) to(%d) with num passed(%d)\n", prev, l, current, passes)
