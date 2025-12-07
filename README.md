@@ -13,9 +13,8 @@
 ```
 > make help
 
-make run DIR='<service>'   - Run a day e.g. make run DIR='day1''
-make clean                 - Stop docker container and clean images
-
+make run DAY='<day>'   - Run a day e.g. make run DAY='day1''
+make clean             - Stop docker container and clean images
 ```
 
 **Running the solutions**
@@ -23,10 +22,10 @@ make clean                 - Stop docker container and clean images
 First make sure you have your input to pipe as stdin into the solution
 
 ```
-make run DIR='<service directory>'
+make run DAY='<service directory>'
 
 for example:
-echo "my input" | make run DIR='day1'
-cat input.txt | make run DIR='day1'
-make run DIR='day1' < input.txt
+echo "my input" | make run DAY='day1'
+cat input.txt | make run DAY='day1'
+make run DAY='day1' < input.txt
 ```
