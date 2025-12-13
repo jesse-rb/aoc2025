@@ -17,8 +17,8 @@ func main() {
 func part2(lines []string) {
 	log.Println("part2")
 
-	// debug := false
-	debug := true
+	debug := false
+	// debug := true
 
 	l := lines[0]
 
@@ -27,9 +27,9 @@ func part2(lines []string) {
 
 	// Iterate over ranges
 	for _, r := range ranges {
-		start_end := strings.Split(r, "-")
-		start := start_end[0]
-		end := start_end[1]
+		startEnd := strings.Split(r, "-")
+		start := startEnd[0]
+		end := startEnd[1]
 
 		s, err := strconv.Atoi(start)
 		util.Must(err)
@@ -37,7 +37,7 @@ func part2(lines []string) {
 		e, err := strconv.Atoi(end)
 		util.Must(err)
 
-		go part2_worker(s, e, chWorkers, debug)
+		go part2Worker(s, e, chWorkers, debug)
 	}
 
 	// Wait for all workers to finish before continuing
@@ -50,7 +50,7 @@ func part2(lines []string) {
 	log.Printf("%d", totalInvalidIDs)
 }
 
-func part2_worker(s int, e int, chWorkers chan int, debug bool) {
+func part2Worker(s int, e int, chWorkers chan int, debug bool) {
 	invalidIDs := 0
 
 	// Iterate over range of IDs to find a ids which consists ONLY of a sequence twice
@@ -59,7 +59,7 @@ func part2_worker(s int, e int, chWorkers chan int, debug bool) {
 
 		// Find sequence which repeats atleast twice
 		seqTemplate := ""
-		seqIndex := 0
+		seqTemplateIndex := 0
 		sequences := []string{""}
 		latestSeqIndex := 0
 
@@ -69,6 +69,10 @@ func part2_worker(s int, e int, chWorkers chan int, debug bool) {
 
 		fnAddToLatestSeq := func(b byte) {
 			sequences[latestSeqIndex] = sequences[latestSeqIndex] + string(b)
+		}
+
+		if debug {
+			log.Printf("--------\nSTATE %+v\n", i)
 		}
 
 		// pseudocode:
@@ -91,36 +95,54 @@ func part2_worker(s int, e int, chWorkers chan int, debug bool) {
 			b := curr[j]
 
 			// IF b matches the start of the template, start a new sequence
-			if len(seqTemplate) > seqIndex && seqTemplate[seqIndex] == b {
-				// IF b matches the template, ... continue building our latest sequence
-				fnAddToLatestSeq(b)
-				seqIndex++
-			} else if len(sequences) > 1 {
-				// Otherwise we must squash all our sequences into one template continue from there
-				seqTemplate = strings.Join(sequences, "")
-				latestSeqIndex = 0
-				seqIndex = 0
-				fnAddToTemplate(b)
-				fnAddToLatestSeq(b)
-			} else if len(seqTemplate) > 0 && seqTemplate[0] == b {
+			if len(seqTemplate) > 0 && seqTemplateIndex >= len(seqTemplate) && seqTemplate[0] == b {
 				sequences = append(sequences, "")
 				latestSeqIndex++
 				fnAddToLatestSeq(b)
-				seqIndex = 1
+				seqTemplateIndex = 1
+			} else if len(seqTemplate) > seqTemplateIndex && seqTemplate[seqTemplateIndex] == b {
+				// IF b matches the template, ... continue building our latest sequence
+				fnAddToLatestSeq(b)
+				seqTemplateIndex++
+			} else if len(sequences) > 1 {
+				// Otherwise we must squash all our sequences into one template continue from there
+				seqTemplate = strings.Join(sequences, "")
+				sequences = []string{seqTemplate}
+				seqTemplateIndex = 0
+
+				if seqTemplate[0] == b {
+					sequences = append(sequences, "")
+					seqTemplateIndex = 1
+					latestSeqIndex = 1
+					fnAddToLatestSeq(b)
+				} else {
+					latestSeqIndex = 0
+					fnAddToTemplate(b)
+					fnAddToLatestSeq(b)
+					seqTemplateIndex = len(seqTemplate)
+				}
+
 			} else {
 				// If the template does not yet have something, for this index, we add to the tempalte
 				fnAddToTemplate(b)
 				fnAddToLatestSeq(b)
+				seqTemplateIndex++
+			}
+
+			if debug {
+				log.Printf("%+v\n", sequences)
 			}
 		}
 
 		if len(sequences) >= 2 {
-			// Now we know it must be an invalid ID
-			if debug {
-				log.Printf("curr: '%s'\n", curr)
-				log.Printf("%+v", sequences)
+			if sequences[0] == sequences[len(sequences)-1] {
+				// Now we know it must be an invalid ID
+				if debug {
+					log.Printf("curr: '%s'\n", curr)
+					log.Printf("%+v", sequences)
+				}
+				invalidIDs += i
 			}
-			invalidIDs += i
 		}
 	}
 
@@ -140,9 +162,9 @@ func part1(lines []string) {
 
 	// Iterate over ranges
 	for _, r := range ranges {
-		start_end := strings.Split(r, "-")
-		start := start_end[0]
-		end := start_end[1]
+		startEnd := strings.Split(r, "-")
+		start := startEnd[0]
+		end := startEnd[1]
 
 		s, err := strconv.Atoi(start)
 		util.Must(err)
@@ -150,7 +172,7 @@ func part1(lines []string) {
 		e, err := strconv.Atoi(end)
 		util.Must(err)
 
-		go part1_worker(s, e, chWorkers, debug)
+		go part1Worker(s, e, chWorkers, debug)
 	}
 
 	// Wait for all workers to finish before continuing
@@ -163,7 +185,7 @@ func part1(lines []string) {
 	log.Printf("%d", totalInvalidIDs)
 }
 
-func part1_worker(s int, e int, chWorkers chan int, debug bool) {
+func part1Worker(s int, e int, chWorkers chan int, debug bool) {
 	invalidIDs := 0
 
 	// Iterate over range of IDs to find a ids which consists ONLY of a sequence twice
