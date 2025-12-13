@@ -38,3 +38,11 @@ func InverseSignInt(x int) int {
 func ModInt(a int, b int) int {
 	return (a%b + b) % b
 }
+
+func IfThenElse[T any](expression bool, v1 T, v2 T) T {
+	if expression {
+		return v1
+	} else {
+		return v2
+	}
+}
