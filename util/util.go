@@ -1,3 +1,4 @@
+// Package util is a small utiity package which all days of aoc2025 can use
 package util
 
 import (
