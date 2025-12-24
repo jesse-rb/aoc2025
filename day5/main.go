@@ -92,15 +92,15 @@ func part2(lines []string) {
 			// If overlaps with next range
 			if currentRange[1] > rNext[0] {
 				// nonOverlappingRanges = append(nonOverlappingRanges, [2]int{currentRange[0], rNext[0]})
-				numFresh += (rNext[0] + 1) - currentRange[0]
-				currentRange = [2]int{rNext[0], currentRange[1]}
+				numFresh += (currentRange[1] - 1) - currentRange[0] + 1
+				currentRange = [2]int{currentRange[1], rNext[1]}
 			} else {
 				// nonOverlappingRanges = append(nonOverlappingRanges, currentRange)
-				numFresh += (currentRange[1] + 1) - currentRange[0]
+				numFresh += currentRange[1] - currentRange[0] + 1
 				currentRange = rNext
 			}
 		} else {
-			numFresh += (currentRange[1] + 1) - currentRange[0]
+			numFresh += currentRange[1] - currentRange[0] + 1
 			// nonOverlappingRanges = append(nonOverlappingRanges, currentRange)
 		}
 	}
