@@ -47,3 +47,7 @@ func IfThenElse[T any](expression bool, v1 T, v2 T) T {
 		return v2
 	}
 }
+
+func CeilInt(a int, b int) int {
+	return (a + b - 1) / b
+}
