@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"slices"
 	"strconv"
@@ -58,8 +57,8 @@ func part1(lines []string) {
 func part2(lines []string) {
 	log.Println("part TWO")
 
-	numFresh := 0
-	ranges := make([][2]int, 0)
+	numFresh := int64(0)
+	ranges := make([][2]int64, 0)
 
 	for _, l := range lines {
 		if l == "" {
@@ -68,20 +67,26 @@ func part2(lines []string) {
 
 		// Build fresh ID ranges
 		r := strings.Split(l, "-")
-		from, _ := strconv.Atoi(r[0])
-		to, _ := strconv.Atoi(r[1])
+		from, _ := strconv.ParseInt(r[0], 10, 64)
+		to, _ := strconv.ParseInt(r[1], 10, 64)
 
-		ranges = append(ranges, [2]int{from, to})
+		ranges = append(ranges, [2]int64{from, to})
 	}
 
 	// Sort ranges
-	slices.SortFunc(ranges, func(a [2]int, b [2]int) int {
-		return a[0] - b[0]
+	slices.SortFunc(ranges, func(a [2]int64, b [2]int64) int {
+		if a[0] > b[0] {
+			return 1
+		} else if a[0] < b[0] {
+			return -1
+		} else {
+			return 0
+		}
 	})
 
 	// Build non-overlapping ranges
 	// nonOverlappingRanges := make([][2]int, 0)
-	currentRange := [2]int{}
+	currentRange := [2]int64{}
 	for i, r := range ranges {
 		if i == 0 {
 			currentRange = r
@@ -90,10 +95,10 @@ func part2(lines []string) {
 		if i < len(ranges)-1 {
 			rNext := ranges[i+1]
 			// If overlaps with next range
-			if currentRange[1] > rNext[0] {
+			if currentRange[1] >= rNext[0] {
 				// nonOverlappingRanges = append(nonOverlappingRanges, [2]int{currentRange[0], rNext[0]})
-				numFresh += (currentRange[1] - 1) - currentRange[0] + 1
-				currentRange = [2]int{currentRange[1], rNext[1]}
+				// numFresh += (currentRange[1] - 1) - currentRange[0] + 1
+				currentRange[1] = util.MaxInt64(rNext[1], currentRange[1])
 			} else {
 				// nonOverlappingRanges = append(nonOverlappingRanges, currentRange)
 				numFresh += currentRange[1] - currentRange[0] + 1
@@ -112,8 +117,4 @@ func part2(lines []string) {
 	// }
 
 	log.Printf("Num fresh: %d\n", numFresh)
-}
-
-func part2MapKey(from int, to int) string {
-	return fmt.Sprintf("%d-%d", from, to)
 }
